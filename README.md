@@ -1,9 +1,8 @@
-Perfect 👍 — your README is already very good.
-We’ll just **merge everything cleanly + add Module 10 part** so it looks complete and professional.
+Perfect 👍 I’ll merge your README + add **Module 11 cleanly** (nothing extra, simple and professional).
 
 ---
 
-### 👉 Copy EVERYTHING below and replace your README.md
+### 👉 Replace your README.md with this (final version)
 
 ```markdown
 # FastAPI Calculator Application
@@ -39,31 +38,35 @@ The application is designed with a strong focus on testing, security, and automa
 ```
 
 fastapi-calculator/
-│
+
 ├── main.py
 ├── operations.py
 ├── requirements.txt
 ├── pytest.ini
 ├── README.md
-│
+
 ├── app/
 │   ├── models/
-│   │   └── user.py
+│   │   ├── user.py
+│   │   └── calculation.py
 │   ├── schemas/
-│   │   └── user.py
+│   │   ├── user.py
+│   │   └── calculation.py
 │   ├── security/
 │   │   └── password.py
 │   └── database.py
-│
+
 ├── tests/
 │   ├── test_main.py
 │   ├── test_operations.py
 │   ├── unit/
+│   │   └── test_calculation_schema.py
 │   └── integration/
-│
+│       └── test_calculation_model.py
+
 ├── e2e/
 │   └── test_e2e.py
-│
+
 ├── .github/
 │   └── workflows/
 │       └── ci.yml
@@ -123,11 +126,6 @@ pytest
 
 ```
 
-Includes:
-- Unit tests
-- Integration tests
-- End-to-end tests (Playwright)
-
 ---
 
 ## Module 10 - Secure User Model & Deployment
@@ -143,6 +141,25 @@ Includes:
 - Unit and integration testing for user model
 - CI pipeline using GitHub Actions
 - Docker containerization and deployment
+
+---
+
+## Module 11 - Calculation Model & Validation
+
+### What was implemented
+- SQLAlchemy Calculation model with:
+  - a, b (operands)
+  - type (Add, Sub, Multiply, Divide)
+  - result (optional)
+- Pydantic schemas:
+  - CalculationCreate (input validation)
+  - CalculationRead (output serialization)
+- Validations implemented:
+  - Allowed operation types only
+  - Division by zero is not allowed
+- Unit tests for schema validation
+- Integration test for database storage
+- CI/CD pipeline updated to include calculation tests
 
 ---
 
