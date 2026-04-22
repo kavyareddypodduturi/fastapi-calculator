@@ -203,7 +203,3 @@ Overall, this project helped me understand backend development, testing, and dep
 
 This project demonstrates a complete backend system including API development, testing, security, CI/CD, and containerization. It reflects best practices in modern software development using FastAPI.
 ```
-
-
-#
-Just say 👍
