@@ -77,7 +77,8 @@ def test_login_user(client):
     )
 
     assert response.status_code == 200
-    assert response.json()["message"] == "Login successful"
+    assert "access_token" in response.json()
+    assert response.json()["token_type"] == "bearer"
 
 
 def test_create_calculation(client):
