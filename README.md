@@ -1,35 +1,34 @@
-Perfect 👍 I’ll merge your README + add **Module 11 cleanly** (nothing extra, simple and professional).
-
----
-
-### 👉 Replace your README.md with this (final version)
-
-```markdown
 # FastAPI Calculator Application
 
 ## Overview
-This project is a simple FastAPI-based calculator that performs basic arithmetic operations such as addition, subtraction, multiplication, and division.
+This project is a FastAPI-based calculator application that supports arithmetic operations along with user authentication and database integration.
 
-The application is designed with a strong focus on testing, security, and automation. It includes unit testing, integration testing, end-to-end testing, CI/CD using GitHub Actions, and Docker-based deployment.
+The application demonstrates a complete backend system with secure user handling, calculation CRUD operations, automated testing, CI/CD pipeline, and Docker deployment.
 
 ---
 
 ## Features
-- REST API built using FastAPI
-- Supports basic operations:
-  - Addition
-  - Subtraction
-  - Multiplication
-  - Division
-- Interactive API interface using Swagger UI
-- Logging implemented for tracking operations and errors
-- Secure user model with password hashing
+- User Authentication:
+  - Register user
+  - Login user (with hashed passwords)
+
+- Calculation Operations (BREAD):
+  - Browse (GET all calculations)
+  - Read (GET by ID)
+  - Add (POST new calculation)
+  - Edit (PUT/PATCH calculation)
+  - Delete (DELETE calculation)
+
+- Built using FastAPI and SQLAlchemy
+- Input validation using Pydantic
+- Password hashing using bcrypt
+- Swagger UI for API testing
 - Automated testing:
-  - Unit Tests (pytest)
-  - Integration Tests (SQLAlchemy + database)
-  - End-to-End Tests (Playwright)
-- Continuous Integration (CI) using GitHub Actions
-- Docker containerization and deployment
+  - Unit tests
+  - Integration tests
+  - End-to-End tests (Playwright)
+- CI/CD using GitHub Actions
+- Docker containerization
 
 ---
 
@@ -56,20 +55,21 @@ fastapi-calculator/
 │   │   └── password.py
 │   └── database.py
 
+├── app/
+│   ├── routes_user.py
+│   └── routes_calculation.py
+
 ├── tests/
 │   ├── test_main.py
 │   ├── test_operations.py
 │   ├── unit/
-│   │   └── test_calculation_schema.py
 │   └── integration/
-│       └── test_calculation_model.py
+│       └── test_api_routes.py
 
 ├── e2e/
 │   └── test_e2e.py
 
-├── .github/
-│   └── workflows/
-│       └── ci.yml
+├── .github/workflows/ci.yml
 
 ```
 
@@ -77,7 +77,7 @@ fastapi-calculator/
 
 ## Installation & Setup
 
-### 1. Clone the repository
+### Clone repository
 ```
 
 git clone [https://github.com/kavyareddypodduturi/fastapi-calculator.git](https://github.com/kavyareddypodduturi/fastapi-calculator.git)
@@ -85,7 +85,7 @@ cd fastapi-calculator
 
 ```
 
-### 2. Create virtual environment
+### Create virtual environment
 ```
 
 python3 -m venv venv
@@ -93,7 +93,7 @@ source venv/bin/activate
 
 ```
 
-### 3. Install dependencies
+### Install dependencies
 ```
 
 pip install -r requirements.txt
@@ -104,68 +104,64 @@ pip install -r requirements.txt
 
 ## Running the Application
 
-Start the FastAPI server:
 ```
 
 uvicorn main:app --reload
 
 ```
 
-Open in browser:
-- API root: http://127.0.0.1:8000
-- Swagger UI: http://127.0.0.1:8000/docs
+Open:
+- http://127.0.0.1:8000
+- http://127.0.0.1:8000/docs
 
 ---
 
 ## Running Tests
 
-Run all tests:
 ```
 
-pytest
+python3 -m pytest -v
 
 ```
 
 ---
 
-## Module 10 - Secure User Model & Deployment
+## API Testing (OpenAPI)
 
-### What was implemented
-- SQLAlchemy User model with:
-  - username (unique)
-  - email (unique)
-  - password_hash
-  - created_at timestamp
-- Pydantic schemas for validation
-- Password hashing using bcrypt
-- Unit and integration testing for user model
-- CI pipeline using GitHub Actions
-- Docker containerization and deployment
+Use Swagger UI:
+
+http://127.0.0.1:8000/docs
+
+Verify:
+- User register
+- User login
+- Calculation create
+- Fetch calculations
+- Update & delete operations
 
 ---
 
-## Module 11 - Calculation Model & Validation
+## End-to-End Testing Note
 
-### What was implemented
-- SQLAlchemy Calculation model with:
-  - a, b (operands)
-  - type (Add, Sub, Multiply, Divide)
-  - result (optional)
-- Pydantic schemas:
-  - CalculationCreate (input validation)
-  - CalculationRead (output serialization)
-- Validations implemented:
-  - Allowed operation types only
-  - Division by zero is not allowed
-- Unit tests for schema validation
-- Integration test for database storage
-- CI/CD pipeline updated to include calculation tests
+Playwright E2E tests require the FastAPI server to be running locally at:
+
+http://127.0.0.1:8000
+
+---
+
+## CI/CD Pipeline
+
+GitHub Actions is configured to:
+- Install dependencies
+- Run all tests (unit + integration + E2E)
+- Ensure code quality on every push
+- Build and push Docker image on success
 
 ---
 
 ## Docker Deployment
 
-### Build Docker image
+### Build Image
 ```
 
 docker build -t kavyareddypodduturi/fastapi-calculator:latest .
@@ -179,42 +175,35 @@ docker push kavyareddypodduturi/fastapi-calculator:latest
 
 ```
 
-### Pull from Docker Hub
+### Pull Image
 ```
 
 docker pull kavyareddypodduturi/fastapi-calculator:latest
 
 ```
 
-Docker Hub Repository:  
+Docker Hub:
 https://hub.docker.com/r/kavyareddypodduturi/fastapi-calculator
 
 ---
 
-## Continuous Integration (CI)
+## Reflection (Summary)
 
-GitHub Actions is configured to:
-- Install dependencies
-- Install Playwright browsers
-- Start FastAPI server
-- Run all tests automatically on every push
+In this project, I implemented user authentication and calculation CRUD operations using FastAPI, SQLAlchemy, and Pydantic. I learned how to securely handle user data using password hashing and how to validate API inputs effectively.
 
----
+Writing integration tests helped me understand how different components (routes, database, and schemas) work together. Setting up GitHub Actions gave me hands-on experience with CI/CD pipelines, where tests run automatically on every commit.
 
-## Learning Outcomes
+One challenge I faced was fixing test failures in CI due to missing dependencies, which I resolved by updating the requirements file. Another challenge was handling Playwright E2E tests, which required running the FastAPI server separately.
 
-This project demonstrates:
-- Creating REST APIs using FastAPI
-- Implementing secure user authentication (hashing)
-- Using Pydantic for validation
-- Writing unit, integration, and end-to-end tests
-- Using Playwright for browser testing
-- Setting up CI/CD using GitHub Actions
-- Containerizing applications using Docker
+Overall, this project helped me understand backend development, testing, and deployment in a practical way.
 
 ---
 
 ## Conclusion
 
-This project showcases a complete workflow from development to testing, security, and deployment. It demonstrates how to build reliable and scalable applications using modern tools and best practices.
+This project demonstrates a complete backend system including API development, testing, security, CI/CD, and containerization. It reflects best practices in modern software development using FastAPI.
 ```
+
+
+#
+Just say 👍
