@@ -1,7 +1,16 @@
 from fastapi import FastAPI
 from operations import add, subtract, multiply, divide
+from app.routes_user import router as user_router
+from app.routes_calculation import router as calculation_router
+from app.database import Base, engine
+from app.models import user, calculation
 
 app = FastAPI()
+
+Base.metadata.create_all(bind=engine)
+
+app.include_router(user_router)
+app.include_router(calculation_router)
 
 @app.get("/")
 def read_root():
