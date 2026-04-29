@@ -1,5 +1,7 @@
-from sqlalchemy import Column, Integer, Float, String
+from sqlalchemy import Column, Integer, Float, String, ForeignKey
+from sqlalchemy.orm import relationship
 from app.database import Base
+
 
 class Calculation(Base):
     __tablename__ = "calculations"
@@ -8,4 +10,8 @@ class Calculation(Base):
     a = Column(Float, nullable=False)
     b = Column(Float, nullable=False)
     type = Column(String, nullable=False)
-    result = Column(Float, nullable=True)
+    result = Column(Float)
+
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+
+    user = relationship("User")

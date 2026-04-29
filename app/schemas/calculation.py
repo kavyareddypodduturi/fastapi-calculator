@@ -21,6 +21,12 @@ class CalculationCreate(BaseModel):
         return self
 
 
+class CalculationUpdate(BaseModel):
+    a: float | None = None
+    b: float | None = None
+    type: str | None = None
+
+
 class CalculationRead(BaseModel):
     id: int
     a: float

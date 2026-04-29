@@ -1,4 +1,5 @@
 from app.database import Base, engine, SessionLocal
+from app.models.user import User
 from app.models.calculation import Calculation
 
 
@@ -8,7 +9,7 @@ Base.metadata.create_all(bind=engine)
 def test_create_calculation_record():
     db = SessionLocal()
 
-    calc = Calculation(a=10, b=5, type="Add", result=15)
+    calc = Calculation(a=10, b=5, type="Add", result=15, user_id=1)
     db.add(calc)
     db.commit()
     db.refresh(calc)

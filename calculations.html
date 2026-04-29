@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculations BREAD</title>
+</head>
+<body>
+    <h1>Calculations BREAD Operations</h1>
+
+    <h2>Add Calculation</h2>
+
+    <input type="number" id="a" placeholder="Enter first number">
+    <input type="number" id="b" placeholder="Enter second number">
+
+    <select id="type">
+        <option value="Add">Add</option>
+        <option value="Sub">Sub</option>
+        <option value="Multiply">Multiply</option>
+        <option value="Divide">Divide</option>
+    </select>
+
+    <button onclick="addCalculation()">Add Calculation</button>
+
+    <h2>All Calculations</h2>
+    <button onclick="loadCalculations()">Browse Calculations</button>
+
+    <div id="output"></div>
+
+    <script>
+        const API_URL = "http://127.0.0.1:8000/calculations/";
+    
+        async function addCalculation() {
+            const a = document.getElementById("a").value;
+            const b = document.getElementById("b").value;
+            const type = document.getElementById("type").value;
+    
+            if (a === "" || b === "") {
+                alert("Enter values");
+                return;
+            }
+    
+            await fetch(API_URL, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    a: Number(a),
+                    b: Number(b),
+                    type: type
+                })
+            });
+    
+            loadCalculations();
+        }
+    
+        async function loadCalculations() {
+            const res = await fetch(API_URL);
+            const data = await res.json();
+    
+            let html = "";
+    
+            data.forEach(calc => {
+                html += `
+                    <div>
+                        ID: ${calc.id} | ${calc.a} ${calc.type} ${calc.b} = ${calc.result}
+                        <button onclick="readCalc(${calc.id})">Read</button>
+                        <button onclick="editCalc(${calc.id})">Edit</button>
+                        <button onclick="deleteCalc(${calc.id})">Delete</button>
+                    </div>
+                `;
+            });
+    
+            document.getElementById("output").innerHTML = html;
+        }
+    
+        async function readCalc(id) {
+            const res = await fetch(API_URL + id);
+            const data = await res.json();
+    
+            alert(JSON.stringify(data, null, 2));
+        }
+    
+        async function deleteCalc(id) {
+            await fetch(API_URL + id, { method: "DELETE" });
+            loadCalculations();
+        }
+        async function editCalc(id) {
+             const a = prompt("Enter new value for a:");
+             const b = prompt("Enter new value for b:");
+             const type = prompt("Enter type (Add, Sub, Multiply, Divide):");
+
+            await fetch(API_URL + id, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    a: Number(a),
+                    b: Number(b),
+                    type: type
+                })
+            });
+
+        loadCalculations();
+    }
+    </script>
+</body>
+</html>
