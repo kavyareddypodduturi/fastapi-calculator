@@ -1,9 +1,10 @@
 from playwright.sync_api import sync_playwright
+import os
 
 
 def test_homepage():
     with sync_playwright() as p:
-        browser = p.chromium.launch()
+        browser = p.chromium.launch(headless=True)
         page = browser.new_page()
 
         page.goto("http://127.0.0.1:8000")
@@ -19,7 +20,9 @@ def test_bread_operations():
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
 
-        page.goto("http://127.0.0.1:5500/calculations.html")
+        # ✅ FIX: load HTML file directly (works in CI)
+        file_path = os.path.abspath("calculations.html")
+        page.goto(f"file://{file_path}")
 
         # ADD
         page.fill("#a", "10")
