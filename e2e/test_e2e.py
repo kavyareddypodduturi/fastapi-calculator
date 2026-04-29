@@ -16,7 +16,7 @@ def test_homepage():
 
 def test_bread_operations():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=True)
         page = browser.new_page()
 
         page.goto("http://127.0.0.1:5500/calculations.html")
