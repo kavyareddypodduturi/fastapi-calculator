@@ -25,6 +25,11 @@
 
     <div id="output"></div>
 
+    <h2>Calculation Statistics</h2>
+    <button onclick="loadStats()">Load Statistics</button>
+
+    <div id="stats"></div>
+
     <script>
         const API_URL = "http://127.0.0.1:8000/calculations/";
     
@@ -82,10 +87,11 @@
             await fetch(API_URL + id, { method: "DELETE" });
             loadCalculations();
         }
+
         async function editCalc(id) {
-             const a = prompt("Enter new value for a:");
-             const b = prompt("Enter new value for b:");
-             const type = prompt("Enter type (Add, Sub, Multiply, Divide):");
+            const a = prompt("Enter new value for a:");
+            const b = prompt("Enter new value for b:");
+            const type = prompt("Enter type (Add, Sub, Multiply, Divide):");
 
             await fetch(API_URL + id, {
                 method: "PUT",
@@ -99,8 +105,21 @@
                 })
             });
 
-        loadCalculations();
-    }
+            loadCalculations();
+        }
+
+        async function loadStats() {
+            const response = await fetch("http://127.0.0.1:8000/calculations/stats/report");
+            const data = await response.json();
+
+            document.getElementById("stats").innerHTML = `
+                <p>Total Calculations: ${data.total_calculations}</p>
+                <p>Total Add Operations: ${data.total_add_operations}</p>
+                <p>Total Subtract Operations: ${data.total_subtract_operations}</p>
+                <p>Highest Result: ${data.highest_result}</p>
+                <p>Average Result: ${data.average_result}</p>
+            `;
+        }
     </script>
 </body>
 </html>

@@ -5,6 +5,9 @@ from app.database import get_db
 from app.models.calculation import Calculation
 from app.schemas.calculation import CalculationCreate, CalculationUpdate, CalculationRead
 
+from sqlalchemy import func
+from app.schemas.report import CalculationStats
+
 router = APIRouter(prefix="/calculations", tags=["Calculations"])
 
 
@@ -124,3 +127,38 @@ def delete_calculation(calculation_id: int, db: Session = Depends(get_db)):
     db.commit()
 
     return {"message": "Calculation deleted successfully"}
+
+# REPORT / STATS
+@router.get("/stats/report", response_model=CalculationStats)
+def get_calculation_stats(db: Session = Depends(get_db)):
+    user_id = get_current_user_id()
+
+    total_calculations = db.query(Calculation).filter(
+        Calculation.user_id == user_id
+    ).count()
+
+    total_add_operations = db.query(Calculation).filter(
+        Calculation.user_id == user_id,
+        Calculation.type == "Add"
+    ).count()
+
+    total_subtract_operations = db.query(Calculation).filter(
+        Calculation.user_id == user_id,
+        Calculation.type == "Sub"
+    ).count()
+
+    highest_result = db.query(func.max(Calculation.result)).filter(
+        Calculation.user_id == user_id
+    ).scalar()
+
+    average_result = db.query(func.avg(Calculation.result)).filter(
+        Calculation.user_id == user_id
+    ).scalar()
+
+    return {
+        "total_calculations": total_calculations,
+        "total_add_operations": total_add_operations,
+        "total_subtract_operations": total_subtract_operations,
+        "highest_result": highest_result,
+        "average_result": average_result
+    }
