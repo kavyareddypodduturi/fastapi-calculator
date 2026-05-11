@@ -6,7 +6,7 @@ def test_calculation_statistics_ui():
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
 
-        page.goto("http://127.0.0.1:5500/calculations.html")
+        page.goto("file://" + __import__("os").path.abspath("calculations.html"))
 
         page.click("text=Load Statistics")
 
